@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Remover</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            width: 400px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        select, input[type="file"], input[type="submit"], input[type="color"] {
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .flash {
+            color: red;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Upload Images to Remove Backgrounds</h1>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flash">{{ messages[0] }}</div>
+    {% endif %}
+    {% endwith %}
+
+    <form action="/remove-bg" method="POST" enctype="multipart/form-data">
+        <label for="images">Choose Images (multiple allowed):</label>
+        <input type="file" name="images" accept="image/*" multiple required>
+
+        <label for="model">Choose Model:</label>
+        <select name="model">
+            <option value="people">People (Default)</option>
+            <option value="products">Products</option>
+        </select>
+
+        <label for="precision">Precision Level:</label>
+        <select name="precision">
+            <option value="low">Low Precision (Faster)</option>
+            <option value="medium" selected>Medium Precision (Balanced)</option>
+            <option value="high">High Precision (Slower, More Accurate)</option>
+        </select>
+
+        <label for="bg_color">Custom Background Color (optional):</label>
+        <input type="color" name="bg_color" value="#ffffff">
+
+        <label for="bg_file">Custom Background Image (optional):</label>
+        <input type="file" name="bg_file" accept="image/*">
+
+        <input type="submit" value="Remove Backgrounds">
+    </form>
+
+</body>
+</html>
